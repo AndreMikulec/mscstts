@@ -5,10 +5,14 @@
 #' @param api_key Microsoft Cognitive Services API key, if token is not
 #' provided.
 #' @param script A character vector of lines to be spoken
+#' @param  token_url authorization token URL
+#' (if different or custom from the default)
 #' @param token An authentication token, base-64 encoded usually from
 #' \code{\link{get_ms_tts_token}}.  If not provided, will be created from
 #' \code{\link{get_ms_tts_token}}
 #' @param gender Sex of the Speaker
+#' @param  synth_url voice synthesis request URL
+#' (if different or custom from the default)
 #' @param language Language to be spoken,
 #' must be from \code{\link{ms_language_codes}}
 #' @param output_format Format of the output, see
@@ -32,6 +36,17 @@
 #' tmp <- tempfile()
 #' writeBin(res$content, con = tmp)
 #' mp3 = tuneR::readMP3(tmp)
+#'
+#' if (have_ms_tts_key()) {
+#' res = ms_synthesize(
+#' script = "hey, how are you doing? I'm doing pretty good",
+#' token_url = "https://westus.api.cognitive.microsoft.com/sts/v1.0/issueToken",
+#' synth_url = "https://westus.tts.speech.microsoft.com/cognitiveservices/v1",
+#' output_format = "audio-16khz-128kbitrate-mono-mp3")
+#' tmp <- tempfile()
+#' writeBin(res$content, con = tmp)
+#' mp3 = tuneR::readMP3(tmp)
+#'
 #' }
 #'
 #' }
@@ -39,8 +54,10 @@
 #' @importFrom httr POST add_headers stop_for_status content content_type
 ms_synthesize = function(
   script,
+  token_url = NULL,
   token = NULL,
   api_key = NULL,
+  synth_url = NULL,
   gender = c("Female", "Male"),
   language = "en-US",
   output_format = c( "raw-16khz-16bit-mono-pcm" ,
@@ -65,11 +82,17 @@ ms_synthesize = function(
   xname = L$full_name
 
 
+  if(is.null(synth_url)) {
   synth_url = paste0(
     'https://speech.platform.bing.com/',
     'synthesize')
+  } else {
+    synth_url
+  }
+  print(paste0("synth_url: ", synth_url))
+
   if (is.null(token)) {
-    token = get_ms_tts_token(api_key = api_key)$token
+    token = get_ms_tts_token(api_key = api_key, token_url = token_url)$token
   }
 
   auth_hdr = add_headers(

@@ -69,10 +69,18 @@ set_ms_tts_key = function(api_key) {
 
 
 #' @rdname get_ms_tts_key
+#' @param  token_url authorization token URL
+#' (if different or custom from the default)
 #' @export
-valid_ms_tts_key = function(api_key = NULL) {
-  token_url = paste0('https://api.cognitive.microsoft.com/',
-                     'sts/v1.0/issueToken')
+valid_ms_tts_key = function(api_key = NULL, token_url = NULL) {
+
+  if(is.null(token_url)) {
+    token_url = paste0('https://api.cognitive.microsoft.com/',
+                       'sts/v1.0/issueToken')
+  } else {
+    token_url
+  }
+  print(paste0("token_url(valid): ", token_url))
 
   if (!have_ms_tts_key()) {
     return(FALSE)
@@ -90,6 +98,8 @@ valid_ms_tts_key = function(api_key = NULL) {
 #' Services Token from API Key
 #'
 #' @param api_key Microsoft Cognitive Services API key
+#' @param  token_url authorization token URL
+#' (if different or custom from the default)
 #'
 #' @return A list of the request, and token
 #' @export
@@ -99,10 +109,15 @@ valid_ms_tts_key = function(api_key = NULL) {
 #' if (valid_ms_tts_key()) {
 #'    token = get_ms_tts_token()
 #' }
-get_ms_tts_token = function(api_key = NULL) {
+get_ms_tts_token = function(api_key = NULL, token_url = NULL) {
 
-  token_url = paste0('https://api.cognitive.microsoft.com/',
-                     'sts/v1.0/issueToken')
+  if(is.null(token_url)) {
+    token_url = paste0('https://api.cognitive.microsoft.com/',
+                       'sts/v1.0/issueToken')
+  } else {
+    token_url
+  }
+  print(paste0("token_url(get): ", token_url))
 
   api_key = get_ms_tts_key(api_key = api_key, error = TRUE)
 

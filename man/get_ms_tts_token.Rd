@@ -5,10 +5,13 @@
 \title{Get Microsoft Text To Speech (TTS) or Cognitive
 Services Token from API Key}
 \usage{
-get_ms_tts_token(api_key = NULL)
+get_ms_tts_token(api_key = NULL, token_url = NULL)
 }
 \arguments{
 \item{api_key}{Microsoft Cognitive Services API key}
+
+\item{token_url}{authorization token URL
+(if different or custom from the default)}
 }
 \value{
 A list of the request, and token

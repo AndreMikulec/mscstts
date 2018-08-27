@@ -14,12 +14,15 @@ have_ms_tts_key(api_key = NULL)
 
 set_ms_tts_key(api_key)
 
-valid_ms_tts_key(api_key = NULL)
+valid_ms_tts_key(api_key = NULL, token_url = NULL)
 }
 \arguments{
 \item{api_key}{Microsoft Cognitive Services API key}
 
 \item{error}{Should the function error if \code{api_key = NULL}?}
+
+\item{token_url}{authorization token URL
+(if different or custom from the default)}
 }
 \value{
 API key

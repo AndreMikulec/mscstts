@@ -5,8 +5,8 @@
 \title{Get Microsoft Text To Speech (TTS) or Cognitive
 Services Token from API Key}
 \usage{
-ms_synthesize(script, token = NULL, api_key = NULL,
-  gender = c("Female", "Male"), language = "en-US",
+ms_synthesize(script, token_url = NULL, token = NULL, api_key = NULL,
+  synth_url = NULL, gender = c("Female", "Male"), language = "en-US",
   output_format = c("raw-16khz-16bit-mono-pcm",
   "ssml-16khz-16bit-mono-tts", "audio-16khz-16kbps-mono-siren",
   "riff-16khz-16kbps-mono-siren", "riff-16khz-16bit-mono-pcm",
@@ -16,12 +16,18 @@ ms_synthesize(script, token = NULL, api_key = NULL,
 \arguments{
 \item{script}{A character vector of lines to be spoken}
 
+\item{token_url}{authorization token URL
+(if different or custom from the default)}
+
 \item{token}{An authentication token, base-64 encoded usually from
 \code{\link{get_ms_tts_token}}.  If not provided, will be created from
 \code{\link{get_ms_tts_token}}}
 
 \item{api_key}{Microsoft Cognitive Services API key, if token is not
 provided.}
+
+\item{synth_url}{voice synthesis request URL
+(if different or custom from the default)}
 
 \item{gender}{Sex of the Speaker}
 
@@ -49,17 +55,4 @@ The
 content is likely in a binary format and the output depends on the
 `output_format` chosen.  For example, if the `output_format` is an `MP3`,
 then see below example
-}
-\examples{
-\dontrun{
-if (have_ms_tts_key()) {
-res = ms_synthesize(
-script = "hey, how are you doing? I'm doing pretty good",
-output_format = "audio-16khz-128kbitrate-mono-mp3")
-tmp <- tempfile()
-writeBin(res$content, con = tmp)
-mp3 = tuneR::readMP3(tmp)
-}
-
-}
 }
